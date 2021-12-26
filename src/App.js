@@ -1,22 +1,50 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-const Fater = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Input = styled.input.attrs({ required: true })`
+const rotationAnimation = keyframes`
+  0% {
+    transform: rotate(0)
+  }
+  50% {
+    transform: rotate(360deg)
+  }
+  100% {
+    transform: rotate(0)
+  }
+`;
+
+const Emoji = styled.span`
+  font-size: 100px;
+`;
+
+const Box = styled.div`
+  width: 200px;
+  height: 200px;
   background-color: tomato;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ${rotationAnimation} 3s linear infinite;
+  ${Emoji} {
+    &:hover {
+      font-size: 40px;
+    }
+  }
 `;
 
 function App() {
   return (
-    <Fater as="header">
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-    </Fater>
+    <Wrapper>
+      <Box>
+        <Emoji>🧐</Emoji>
+      </Box>
+    </Wrapper>
   );
 }
 
