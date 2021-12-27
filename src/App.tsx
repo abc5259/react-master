@@ -28,7 +28,7 @@ const Title = styled.span`
 const Box = styled.div`
   width: 200px;
   height: 200px;
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: teal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,7 +43,7 @@ const Box = styled.div`
 function App() {
   return (
     <Wrapper>
-      <Box bgColor="teal">
+      <Box>
         <Title>hi</Title>
       </Box>
     </Wrapper>
