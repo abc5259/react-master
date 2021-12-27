@@ -5,6 +5,7 @@ const Wrapper = styled.div`
   height: 100vh;
   align-items: center;
   justify-content: center;
+  background-color: ${props => props.theme.backgroundColor};
 `;
 
 const rotationAnimation = keyframes`
@@ -19,19 +20,20 @@ const rotationAnimation = keyframes`
   }
 `;
 
-const Emoji = styled.span`
+const Title = styled.span`
   font-size: 100px;
+  color: ${props => props.theme.textColor};
 `;
 
 const Box = styled.div`
   width: 200px;
   height: 200px;
-  background-color: tomato;
+  background-color: ${({ bgColor }) => bgColor};
   display: flex;
   align-items: center;
   justify-content: center;
   animation: ${rotationAnimation} 3s linear infinite;
-  ${Emoji} {
+  ${Title} {
     &:hover {
       font-size: 40px;
     }
@@ -41,8 +43,8 @@ const Box = styled.div`
 function App() {
   return (
     <Wrapper>
-      <Box>
-        <Emoji>🧐</Emoji>
+      <Box bgColor="teal">
+        <Title>hi</Title>
       </Box>
     </Wrapper>
   );
