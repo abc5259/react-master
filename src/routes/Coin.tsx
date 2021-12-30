@@ -150,7 +150,6 @@ const Coin = () => {
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  console.log(chartMatch);
   useEffect(() => {
     (async () => {
       const infoData = await (
