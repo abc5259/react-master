@@ -154,11 +154,7 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {
-  isDark: boolean;
-}
-
-const Coin = ({ isDark }: ICoinProps) => {
+const Coin = () => {
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { coinId } = useParams<RouteParams>();
@@ -240,7 +236,7 @@ const Coin = ({ isDark }: ICoinProps) => {
               <Price price={tickersData?.quotes.USD} />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart isDark={isDark} coinId={coinId} />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
