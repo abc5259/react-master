@@ -13,10 +13,11 @@ interface IHistorical {
   market_cap: number;
 }
 interface ChartProps {
+  isDark: boolean;
   coinId: string;
 }
 
-const Chart = ({ coinId }: ChartProps) => {
+const Chart = ({ isDark, coinId }: ChartProps) => {
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -39,7 +40,7 @@ const Chart = ({ coinId }: ChartProps) => {
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               height: 500,

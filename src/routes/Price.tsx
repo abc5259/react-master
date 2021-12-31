@@ -8,7 +8,8 @@ const PricePercentBox = styled.div`
   padding: 10px 15px;
   border-radius: 10px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5); ;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 `;
 
 interface PriceProps {

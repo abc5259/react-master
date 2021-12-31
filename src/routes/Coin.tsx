@@ -53,6 +53,7 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -75,8 +76,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   padding: 7px 0px;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.5);
-  color: ${props =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  color: ${props => (props.isActive ? props.theme.accentColor : " white;")};
   a {
     display: block;
   }
@@ -154,7 +154,11 @@ interface PriceData {
   };
 }
 
-const Coin = () => {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+const Coin = ({ isDark }: ICoinProps) => {
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { coinId } = useParams<RouteParams>();
@@ -236,7 +240,7 @@ const Coin = () => {
               <Price price={tickersData?.quotes.USD} />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>
