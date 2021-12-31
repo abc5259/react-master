@@ -24,6 +24,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 10vh;
   display: flex;
   align-items: center;
@@ -83,6 +84,13 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 const Description = styled.p`
   margin: 20px 0px;
+`;
+
+const BackPage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: ${props => props.theme.accentColor};
 `;
 
 interface RouteState {
@@ -175,6 +183,9 @@ const Coin = () => {
         </title>
       </Helmet>
       <Header>
+        <BackPage>
+          <Link to="/">Home</Link>
+        </BackPage>
         <Title>
           {state?.name
             ? state.name
