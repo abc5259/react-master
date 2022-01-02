@@ -1,67 +1,62 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-/* const ToDoList = () => {
-  const [toDO, setToDo] = useState("");
-  const [toDOError, setToDoError] = useState("");
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setToDo(value);
-  };
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (toDO.length < 10) {
-      return setToDoError("To Do should be longer");
-    }
-    console.log("submit");
-  };
-  return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          value={toDO}
-          onChange={onChange}
-          type="text"
-          placeholder="Write a to do"
-        />
-        <button>Add</button>
-        <div>{toDOError !== "" ? toDOError : null}</div>
-      </form>
-    </div>
-  );
-}; */
+interface IForm {
+  email: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  password1: string;
+}
 
 const ToDoList = () => {
-  const { register, handleSubmit, formState } = useForm();
-  const onValid = (data: any) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForm>({ defaultValues: { email: "@naver.com" } });
+  const onValid = (data: IForm) => {
     console.log(data);
   };
-  console.log(formState.errors);
+  console.log(errors);
   return (
     <div>
       <form
         style={{ width: "420px", display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit(onValid)}
       >
-        <input {...register("email", { required: true })} placeholder="Email" />
         <input
-          {...register("firstName", { required: true })}
+          {...register("email", {
+            required: "Email Required",
+            pattern: {
+              value: /^[A-Za-z0-9._%+-]+@naver.com$/,
+              message: "Only naver.com emails allowed",
+            },
+          })}
+          placeholder="Email"
+        />
+        <span>{errors?.email?.message}</span>
+        <input
+          {...register("firstName", { required: "Required" })}
           placeholder="First Name"
         />
+        <span>{errors?.firstName?.message}</span>
         <input
-          {...register("lastName", { required: true })}
+          {...register("lastName", { required: "Required" })}
           placeholder="Last Name"
         />
+        <span>{errors?.lastName?.message}</span>
         <input
-          {...register("username", { required: true, minLength: 10 })}
+          {...register("username", { required: "Required", minLength: 10 })}
           placeholder="Username"
         />
+        <span>{errors?.username?.message}</span>
         <input
-          {...register("password", { required: true, minLength: 5 })}
+          {...register("password", { required: "Required", minLength: 5 })}
           placeholder="Password"
         />
+        <span>{errors?.password?.message}</span>
         <input
           {...register("password1", {
             required: "Password is required",
@@ -72,6 +67,7 @@ const ToDoList = () => {
           })}
           placeholder="Password1"
         />
+        <span>{errors?.password1?.message}</span>
         <button>Add</button>
       </form>
     </div>
