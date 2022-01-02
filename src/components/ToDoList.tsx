@@ -21,6 +21,7 @@ const ToDoContainer = styled.div`
 
 const ToDoList = () => {
   const toDos = useRecoilValue(toDoState);
+  console.log(toDos);
   return (
     <ToDoContainer>
       <h1>To Dos</h1>
