@@ -18,6 +18,11 @@ const ToDo = ({ text, category, id }: IToDo) => {
       ];
     });
   };
+  const deleteToDo = () => {
+    setToDos(oldToDos => {
+      return oldToDos.filter(toDo => toDo.id !== id);
+    });
+  };
 
   return (
     <li>
@@ -37,6 +42,7 @@ const ToDo = ({ text, category, id }: IToDo) => {
           Done
         </button>
       )}
+      <button onClick={deleteToDo}>Delete</button>
     </li>
   );
 };
