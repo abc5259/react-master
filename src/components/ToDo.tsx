@@ -10,8 +10,7 @@ const ToDo = ({ text, catagory, id }: IToDo) => {
     } = event;
     setToDos(oldToDos => {
       const targetIndex = oldToDos.findIndex(toDo => toDo.id === id);
-      const oldToDo = oldToDos[targetIndex];
-      const newToDo = { id, text, catagory: name as any };
+      const newToDo = { id, text, catagory: name as IToDo["catagory"] };
       return [
         ...oldToDos.slice(0, targetIndex),
         newToDo,
