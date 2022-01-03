@@ -7,6 +7,7 @@ import {
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
+import DragableCard from "./components/DragableCard";
 
 const Wrapper = styled.div`
   max-width: 480px;
@@ -30,24 +31,12 @@ const Board = styled.div`
   border-radius: 5px;
   min-height: 200px;
 `;
-const Card = styled.div`
-  background-color: ${props => props.theme.cardColor};
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 5px;
-`;
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
     if (!destination) return;
     setToDos(oldToDos => {
-      // const newToDo = [...oldToDos];
-      // const newToDoIndex = destination?.index;
-      // const toDo = newToDo[source.index];
-      // newToDo.splice(source.index, 1);
-      // newToDo.splice(newToDoIndex as number, 0, toDo);
-      // return newToD
       const copyToDos = [...oldToDos];
       copyToDos.splice(source.index, 1);
       copyToDos.splice(destination?.index, 0, draggableId);
@@ -63,17 +52,7 @@ function App() {
               {provided => (
                 <Board ref={provided.innerRef} {...provided.droppableProps}>
                   {toDos.map((toDo, index) => (
-                    <Draggable key={toDo} draggableId={toDo} index={index}>
-                      {provided => (
-                        <Card
-                          ref={provided.innerRef}
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                        >
-                          {toDo}
-                        </Card>
-                      )}
-                    </Draggable>
+                    <DragableCard key={toDo} toDo={toDo} index={index} />
                   ))}
                   {provided.placeholder}
                 </Board>
