@@ -1,6 +1,7 @@
-import { useRecoilValue } from "recoil";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { toDoSelector, toDoState } from "../atoms";
+import { categoryState, toDoSelector } from "../atoms";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
@@ -12,57 +13,25 @@ const ToDoContainer = styled.div`
   justify-content: center;
 `;
 
-const FlexBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  width: 420px;
-  div {
-    text-align: center;
-    h2 {
-      margin-bottom: 20px;
-    }
-    li {
-      margin-bottom: 10px;
-    }
-  }
-`;
-
 const ToDoList = () => {
-  // const toDos = useRecoilValue(toDoState);
-  const [toDos, doing, done] = useRecoilValue(toDoSelector);
+  const toDos = useRecoilValue(toDoSelector);
+  const [category, setCategory] = useRecoilState(categoryState);
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    setCategory(event.currentTarget.value);
+  };
   return (
     <ToDoContainer>
       <h1>To Dos</h1>
+      <hr />
+      <select value={category} onInput={onInput}>
+        <option value="TO_DO">To DO</option>
+        <option value="DOING">Doing</option>
+        <option value="DONE">Done</option>
+      </select>
       <CreateToDo />
-      <FlexBox>
-        <div>
-          <h2>To Do</h2>
-          <ul>
-            {toDos.map(toDo => (
-              <ToDo key={toDo.id} {...toDo} />
-            ))}
-          </ul>
-        </div>
-        <hr />
-        <div>
-          <h2>Doing</h2>
-          <ul>
-            {doing.map(toDo => (
-              <ToDo key={toDo.id} {...toDo} />
-            ))}
-          </ul>
-        </div>
-        <hr />
-        <div>
-          <h2>Done</h2>
-          <ul>
-            {done.map(toDo => (
-              <ToDo key={toDo.id} {...toDo} />
-            ))}
-          </ul>
-        </div>
-      </FlexBox>
+      {toDos?.map(toDo => (
+        <ToDo key={toDo.id} {...toDo} />
+      ))}
     </ToDoContainer>
   );
 };

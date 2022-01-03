@@ -2,7 +2,7 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import { IToDo, toDoState } from "../atoms";
 
-const ToDo = ({ text, catagory, id }: IToDo) => {
+const ToDo = ({ text, category, id }: IToDo) => {
   const setToDos = useSetRecoilState(toDoState);
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
@@ -10,7 +10,7 @@ const ToDo = ({ text, catagory, id }: IToDo) => {
     } = event;
     setToDos(oldToDos => {
       const targetIndex = oldToDos.findIndex(toDo => toDo.id === id);
-      const newToDo = { id, text, catagory: name as IToDo["catagory"] };
+      const newToDo = { id, text, category: name as IToDo["category"] };
       return [
         ...oldToDos.slice(0, targetIndex),
         newToDo,
@@ -22,17 +22,17 @@ const ToDo = ({ text, catagory, id }: IToDo) => {
   return (
     <li>
       <span>{text}</span>
-      {catagory !== "DOING" && (
+      {category !== "DOING" && (
         <button name="DOING" onClick={onClick}>
           Doing
         </button>
       )}
-      {catagory !== "TO_DO" && (
+      {category !== "TO_DO" && (
         <button name="TO_DO" onClick={onClick}>
           To Do
         </button>
       )}
-      {catagory !== "DONE" && (
+      {category !== "DONE" && (
         <button name="DONE" onClick={onClick}>
           Done
         </button>
