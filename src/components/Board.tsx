@@ -22,17 +22,23 @@ interface IBoardProps {
 
 const Board = ({ toDos, boardId }: IBoardProps) => {
   return (
-    <Droppable droppableId={boardId}>
-      {provided => (
-        <Wrapper ref={provided.innerRef} {...provided.droppableProps}>
-          <h1>{boardId}</h1>
-          {toDos.map((toDo, index) => (
-            <DragableCard key={toDo} toDo={toDo} index={index} />
-          ))}
-          {provided.placeholder}
-        </Wrapper>
-      )}
-    </Droppable>
+    <Wrapper>
+      <h1>{boardId}</h1>
+      <Droppable droppableId={boardId}>
+        {provided => (
+          <div
+            style={{ backgroundColor: "red" }}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {toDos.map((toDo, index) => (
+              <DragableCard key={toDo} toDo={toDo} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </Wrapper>
   );
 };
 
