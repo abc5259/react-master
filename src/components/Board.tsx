@@ -92,6 +92,7 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
             {toDos.map((toDo, index) => (
               <DragableCard
                 key={toDo.id}
+                boardId={boardId}
                 toDoId={toDo.id}
                 toDoText={toDo.text}
                 index={index}
