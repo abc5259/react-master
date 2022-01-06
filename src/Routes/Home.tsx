@@ -23,7 +23,7 @@ const Banner = styled.div<{ bgPhoto: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
+  padding: 0 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${props => props.bgPhoto});
   background-size: cover;
@@ -43,20 +43,6 @@ const OverView = styled.p`
 const Slider = styled.div`
   position: relative;
   top: -200px;
-  button {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 20;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 30px;
-    border: none;
-    cursor: pointer;
-    width: 50px;
-    height: 200px;
-  }
   &:hover {
     button {
       opacity: 1;
@@ -76,9 +62,23 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  height: 200px;
+  padding-bottom: 60%;
   color: red;
   font-size: 14px;
+  button {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    height: 100%;
+  }
 `;
 
 const rowVariants = {
@@ -121,13 +121,7 @@ const Home = () => {
       setLeaving(true);
       const totalMovies = data?.results.length - 1;
       const maxIndex = Math.ceil(totalMovies / offset) - 1;
-      setIndex(prev => {
-        if (prev === maxIndex) {
-          return 0;
-        } else {
-          return prev + 1;
-        }
-      });
+      setIndex(prev => (prev === maxIndex ? 0 : prev + 1));
     }
   };
   const handleResize = () => {
@@ -171,12 +165,13 @@ const Home = () => {
                     <Box
                       key={movie.id}
                       bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    />
+                    >
+                      <button onClick={incraseIndex}>
+                        <FaArrowRight />
+                      </button>
+                    </Box>
                   ))}
               </Row>
-              <button onClick={incraseIndex}>
-                <FaArrowRight />
-              </button>
             </AnimatePresence>
           </Slider>
         </>
