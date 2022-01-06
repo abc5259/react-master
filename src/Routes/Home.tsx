@@ -45,16 +45,20 @@ const Slider = styled.div`
 `;
 const Row = styled(motion.div)`
   display: grid;
-  gap: 10px;
+  gap: 5px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
 `;
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
+  background-image: url(${props => props.bgPhoto});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   height: 200px;
   color: red;
-  font-size: 64px;
+  font-size: 14px;
 `;
 
 const rowVariants = {
@@ -81,6 +85,8 @@ const rowVariants = {
   },
 };
 
+const offset = 6;
+
 const Home = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
@@ -88,7 +94,22 @@ const Home = () => {
   );
   const [index, setIndex] = useState(0);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const incraseIndex = () => setIndex(prev => prev + 1);
+  const [leaving, setLeaving] = useState(false);
+  const incraseIndex = () => {
+    if (data) {
+      if (leaving) return;
+      setLeaving(true);
+      const totalMovies = data?.results.length - 1;
+      const maxIndex = Math.ceil(totalMovies / offset) - 1;
+      setIndex(prev => {
+        if (prev === maxIndex) {
+          return prev;
+        } else {
+          return prev + 1;
+        }
+      });
+    }
+  };
   const handleResize = () => {
     setInnerWidth(window.innerWidth);
   };
@@ -98,6 +119,7 @@ const Home = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [innerWidth]);
+  const toggleLeaving = () => setLeaving(prev => !prev);
   return (
     <Wrapper>
       {isLoading ? (
@@ -112,7 +134,11 @@ const Home = () => {
             <OverView>{data?.results[0].overview}</OverView>
           </Banner>
           <Slider>
-            <AnimatePresence custom={innerWidth}>
+            <AnimatePresence
+              initial={false}
+              onExitComplete={toggleLeaving}
+              custom={innerWidth}
+            >
               <Row
                 custom={innerWidth}
                 variants={rowVariants}
@@ -121,9 +147,15 @@ const Home = () => {
                 exit="exit"
                 key={index}
               >
-                {[1, 2, 3, 4, 5, 6].map(i => (
-                  <Box key={i}>{i}</Box>
-                ))}
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map(movie => (
+                    <Box
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                    />
+                  ))}
               </Row>
             </AnimatePresence>
           </Slider>
