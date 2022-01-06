@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
+import { FaArrowRight } from "react-icons/fa";
 
 const Wrapper = styled.div`
   background-color: black;
@@ -42,6 +43,25 @@ const OverView = styled.p`
 const Slider = styled.div`
   position: relative;
   top: -200px;
+  button {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    height: 200px;
+  }
+  &:hover {
+    button {
+      opacity: 1;
+    }
+  }
 `;
 const Row = styled(motion.div)`
   display: grid;
@@ -103,7 +123,7 @@ const Home = () => {
       const maxIndex = Math.ceil(totalMovies / offset) - 1;
       setIndex(prev => {
         if (prev === maxIndex) {
-          return prev;
+          return 0;
         } else {
           return prev + 1;
         }
@@ -126,10 +146,7 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner
-            onClick={incraseIndex}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
-          >
+          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
             <Title>{data?.results[0].title}</Title>
             <OverView>{data?.results[0].overview}</OverView>
           </Banner>
@@ -157,6 +174,9 @@ const Home = () => {
                     />
                   ))}
               </Row>
+              <button onClick={incraseIndex}>
+                <FaArrowRight />
+              </button>
             </AnimatePresence>
           </Slider>
         </>
