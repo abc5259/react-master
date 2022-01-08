@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-  motion,
-  useAnimation,
-  useTransform,
-  useViewportScroll,
-} from "framer-motion";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -115,7 +110,7 @@ function Header() {
   const navAnimation = useAnimation();
   useEffect(() => {
     scrollY.onChange(() => {
-      if (scrollY.get() > 80) {
+      if (scrollY.get() > 4) {
         navAnimation.start("scroll");
       } else {
         navAnimation.start("top");
@@ -123,15 +118,13 @@ function Header() {
     });
   }, [scrollY]);
   const toggleSearch = () => {
-    if (searchOpen) {
-      inputAnimation.start({
-        scaleX: 0,
-      });
-    } else {
-      inputAnimation.start({
-        scaleX: 1,
-      });
-    }
+    searchOpen
+      ? inputAnimation.start({
+          scaleX: 0,
+        })
+      : inputAnimation.start({
+          scaleX: 1,
+        });
     setSearchOpen(prev => !prev);
   };
   return (

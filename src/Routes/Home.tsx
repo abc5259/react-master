@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
@@ -17,7 +17,7 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ bgphoto: string }>`
   width: 100%;
   height: 100vh;
   display: flex;
@@ -25,7 +25,7 @@ const Banner = styled.div<{ bgPhoto: string }>`
   justify-content: center;
   padding: 0 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${props => props.bgPhoto});
+    url(${props => props.bgphoto});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -42,7 +42,7 @@ const OverView = styled.p`
 
 const Slider = styled.div`
   position: relative;
-  top: -200px;
+  top: -100px;
   &:hover {
     button {
       opacity: 1;
@@ -55,23 +55,13 @@ const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
-`;
-const Box = styled(motion.div)<{ bgPhoto: string }>`
-  background-color: white;
-  background-image: url(${props => props.bgPhoto});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding-bottom: 60%;
-  color: red;
-  font-size: 14px;
   button {
     opacity: 0;
     position: absolute;
-    top: 0;
+    top: 0px;
     right: 0;
     z-index: 20;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 30px;
     border: none;
@@ -79,6 +69,16 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
     width: 50px;
     height: 100%;
   }
+`;
+const Box = styled(motion.div)<{ bgphoto: string }>`
+  background-color: white;
+  background-image: url(${props => props.bgphoto});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-bottom: 60%;
+  color: red;
+  font-size: 14px;
 `;
 
 const rowVariants = {
@@ -108,19 +108,24 @@ const rowVariants = {
 const offset = 6;
 
 const Home = () => {
+  //Moives Data 가져오기
   const { isLoading, data } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
   );
+  // Slider Row key
   const [index, setIndex] = useState(0);
+  // window innerWidth
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [leaving, setLeaving] = useState(false);
-  const incraseIndex = () => {
+  const incraseIndex = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(event.currentTarget);
     if (data) {
       if (leaving) return;
       setLeaving(true);
+      event.currentTarget.style.opacity = "0";
       const totalMovies = data?.results.length - 1;
-      const maxIndex = Math.ceil(totalMovies / offset) - 1;
+      const maxIndex = Math.floor(totalMovies / offset);
       setIndex(prev => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -140,7 +145,7 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+          <Banner bgphoto={makeImagePath(data?.results[0].backdrop_path || "")}>
             <Title>{data?.results[0].title}</Title>
             <OverView>{data?.results[0].overview}</OverView>
           </Banner>
@@ -164,13 +169,12 @@ const Home = () => {
                   .map(movie => (
                     <Box
                       key={movie.id}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <button onClick={incraseIndex}>
-                        <FaArrowRight />
-                      </button>
-                    </Box>
+                      bgphoto={makeImagePath(movie.backdrop_path, "w500")}
+                    />
                   ))}
+                <button onClick={incraseIndex}>
+                  <FaArrowRight />
+                </button>
               </Row>
             </AnimatePresence>
           </Slider>
