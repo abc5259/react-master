@@ -22,6 +22,7 @@ export const Banner = styled.div<{ bgphoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${props => props.bgphoto});
   background-size: cover;
+  background-color: rgba(0, 0, 0, 1);
   background-repeat: no-repeat;
   background-position: center;
 `;
@@ -100,4 +101,24 @@ export const Info = styled(motion.div)`
   h4 {
     font-size: 18px;
   }
+`;
+
+export const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+`;
+
+export const BigMovie = styled(motion.div)<{ scrollY: number }>`
+  cursor: pointer;
+  position: absolute;
+  top: ${props => `${props.scrollY}px`};
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 40vw;
+  height: 80vh;
+  background-color: red;
 `;
