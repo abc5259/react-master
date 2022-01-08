@@ -1,92 +1,20 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../api";
-import { makeImagePath } from "../utils";
+import { getMovies, IGetMoviesResult } from "../../api";
+import { makeImagePath } from "../../utils";
 import { FaArrowRight } from "react-icons/fa";
-
-const Wrapper = styled.div`
-  background-color: black;
-`;
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Banner = styled.div<{ bgphoto: string }>`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 60px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${props => props.bgphoto});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-`;
-
-const Title = styled.h2`
-  font-size: 4vw;
-  margin-bottom: 20px;
-`;
-const OverView = styled.p`
-  font-size: 2vw;
-  width: 50%;
-`;
-
-const Slider = styled.div`
-  position: relative;
-  top: -90px;
-  &:hover {
-    button {
-      opacity: 1;
-    }
-  }
-`;
-const Row = styled(motion.div)`
-  display: grid;
-  gap: 5px;
-  grid-template-columns: repeat(6, 1fr);
-  position: absolute;
-  width: 100%;
-  button {
-    opacity: 0;
-    position: absolute;
-    top: 0px;
-    right: 0;
-    z-index: 20;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 30px;
-    border: none;
-    cursor: pointer;
-    width: 50px;
-    height: 100%;
-  }
-`;
-const Box = styled(motion.div)<{ bgphoto: string }>`
-  background-color: white;
-  background-image: url(${props => props.bgphoto});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding-bottom: 60%;
-  color: red;
-  font-size: 14px;
-  cursor: pointer;
-  &:first-child {
-    transform-origin: center left;
-  }
-  &:nth-child(6) {
-    transform-origin: center right;
-  }
-`;
+import {
+  Banner,
+  Box,
+  Info,
+  Loader,
+  OverView,
+  Row,
+  Slider,
+  Title,
+  Wrapper,
+} from "./HomeStyles";
 
 const rowVariants = {
   hidden: (innerWidth: number) => {
@@ -117,8 +45,16 @@ const BoxVariants = {
     scale: 1,
   },
   hover: {
+    zIndex: 999,
     scale: 1.3,
     y: -50,
+    transition: { delay: 0.3, type: "tween" },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
     transition: { delay: 0.3, type: "tween" },
   },
 };
@@ -191,7 +127,11 @@ const Home = () => {
                       transition={{ type: "tween" }}
                       key={movie.id}
                       bgphoto={makeImagePath(movie.backdrop_path, "w500")}
-                    />
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
                 <button onClick={incraseIndex}>
                   <FaArrowRight />
