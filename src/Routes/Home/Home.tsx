@@ -1,4 +1,4 @@
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getMovies, IGetMoviesResult } from "../../api";
@@ -15,6 +15,7 @@ import {
   Title,
   Wrapper,
 } from "./HomeStyles";
+import { useHistory, useRouteMatch } from "react-router";
 
 const rowVariants = {
   hidden: (innerWidth: number) => {
@@ -62,6 +63,8 @@ const infoVariants = {
 const offset = 6;
 
 const Home = () => {
+  const history = useHistory();
+  const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
   //Moives Data 가져오기
   const { isLoading, data } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
@@ -92,6 +95,9 @@ const Home = () => {
     };
   }, [innerWidth]);
   const toggleLeaving = () => setLeaving(prev => !prev);
+  const onBoxClicked = (movieId: number) => {
+    history.push(`/movies/${movieId}`);
+  };
   return (
     <Wrapper>
       {isLoading ? (
@@ -121,10 +127,12 @@ const Home = () => {
                   .slice(offset * index, offset * index + offset)
                   .map(movie => (
                     <Box
+                      layoutId={`${movie.id}`}
                       variants={BoxVariants}
                       initial="normal"
                       whileHover="hover"
                       transition={{ type: "tween" }}
+                      onClick={() => onBoxClicked(movie.id)}
                       key={movie.id}
                       bgphoto={makeImagePath(movie.backdrop_path, "w500")}
                     >
@@ -139,6 +147,23 @@ const Home = () => {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {bigMovieMatch ? (
+              <motion.div
+                layoutId={`${bigMovieMatch.params.movieId}`}
+                style={{
+                  position: "absolute",
+                  width: "40vw",
+                  height: "80vh",
+                  backgroundColor: "red",
+                  top: 50,
+                  left: 0,
+                  right: 0,
+                  margin: "0 auto",
+                }}
+              ></motion.div>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>

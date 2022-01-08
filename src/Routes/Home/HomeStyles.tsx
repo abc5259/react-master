@@ -55,7 +55,7 @@ export const Row = styled(motion.div)`
     position: absolute;
     top: 0px;
     right: 0;
-    z-index: 20;
+    z-index: 1000;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 30px;
