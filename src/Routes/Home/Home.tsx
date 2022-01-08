@@ -6,7 +6,10 @@ import { makeImagePath } from "../../utils";
 import { FaArrowRight } from "react-icons/fa";
 import {
   Banner,
+  BigCover,
   BigMovie,
+  BigOverview,
+  BigTitle,
   Box,
   Info,
   Loader,
@@ -106,6 +109,10 @@ const Home = () => {
       history.push("/");
     }
   };
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find(movie => movie.id === +bigMovieMatch.params.movieId);
+  console.log(clickedMovie);
   return (
     <Wrapper>
       {isLoading ? (
@@ -165,9 +172,25 @@ const Home = () => {
                   exit={{ opacity: 0 }}
                 />
                 <BigMovie
-                  scrollY={scrollY.get() + 50}
+                  scrolly={scrollY.get() + 50}
                   layoutId={`${bigMovieMatch.params.movieId}`}
-                ></BigMovie>
+                >
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path,
+                            "w500"
+                          )})`,
+                        }}
+                      >
+                        <BigTitle>{clickedMovie.title}</BigTitle>
+                      </BigCover>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMovie>
               </>
             ) : null}
           </AnimatePresence>

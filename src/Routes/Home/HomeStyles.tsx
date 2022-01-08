@@ -111,14 +111,39 @@ export const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.7);
 `;
 
-export const BigMovie = styled(motion.div)<{ scrollY: number }>`
-  cursor: pointer;
+export const BigMovie = styled(motion.div)<{ scrolly: number }>`
   position: absolute;
-  top: ${props => `${props.scrollY}px`};
+  top: ${props => `${props.scrolly}px`};
   left: 0;
   right: 0;
   margin: 0 auto;
   width: 40vw;
-  height: 80vh;
-  background-color: red;
+  min-height: 40vw;
+  max-height: auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: ${props => props.theme.black.lighter};
+`;
+
+export const BigCover = styled.div`
+  width: 100%;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 60%;
+`;
+
+export const BigTitle = styled.h3`
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  color: ${props => props.theme.white.lighter};
+  text-align: center;
+  font-size: 1.2rem;
+`;
+
+export const BigOverview = styled.p`
+  padding: 20px;
+  color: ${props => props.theme.white.lighter};
 `;
