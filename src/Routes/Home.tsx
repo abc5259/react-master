@@ -42,7 +42,7 @@ const OverView = styled.p`
 
 const Slider = styled.div`
   position: relative;
-  top: -100px;
+  top: -90px;
   &:hover {
     button {
       opacity: 1;
@@ -79,6 +79,13 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   padding-bottom: 60%;
   color: red;
   font-size: 14px;
+  cursor: pointer;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:nth-child(6) {
+    transform-origin: center right;
+  }
 `;
 
 const rowVariants = {
@@ -105,6 +112,17 @@ const rowVariants = {
   },
 };
 
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: { delay: 0.3, type: "tween" },
+  },
+};
+
 const offset = 6;
 
 const Home = () => {
@@ -119,7 +137,6 @@ const Home = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [leaving, setLeaving] = useState(false);
   const incraseIndex = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event.currentTarget);
     if (data) {
       if (leaving) return;
       setLeaving(true);
@@ -168,6 +185,10 @@ const Home = () => {
                   .slice(offset * index, offset * index + offset)
                   .map(movie => (
                     <Box
+                      variants={BoxVariants}
+                      initial="normal"
+                      whileHover="hover"
+                      transition={{ type: "tween" }}
                       key={movie.id}
                       bgphoto={makeImagePath(movie.backdrop_path, "w500")}
                     />
